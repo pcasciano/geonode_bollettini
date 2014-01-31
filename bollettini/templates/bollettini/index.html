@@ -1,0 +1,62 @@
+{% extends "site_base.html" %}
+{% load leaflet_tags %}
+{% block extra_head %}
+<link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet"/>
+
+{% leaflet_js %}
+{% leaflet_css %}
+{% endblock %}
+{% block body_class %}bollettini{% endblock %}
+{% block body_outer %}
+
+<div class="span3">
+  <div class="well">
+    <h2>Bollettini</h2>
+    <section class="article-list latest-maps">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="oggi">oggi</a></li>
+        <li><a href="domani">domani</a></li>
+        <li><a href="dopodomani">dopodomani</a></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+
+
+
+<div class="span9">
+  {% leaflet_map "map" callback="loadGeoJSON"  %}
+</div>
+<script type="text/javascript">
+   function main_map_init (map, options) {
+
+        var dataurl = '{% url "dopodomani-data" %}';
+
+        // Download GeoJSON via Ajax
+        $.getJSON(dataurl, function (data) {
+            // Add GeoJSON layer
+            L.geoJson(data,{
+                style: function(feature){
+                    switch (feature.properties.pericolo){
+                    case '1': return {color: '#B3FF66'}; //green
+                    case '2': return {color: '#FFFF66'}; //yellow
+                    case '3': return {color: '#FFB366'}; //yellow-orange
+                    case '4': return {color: '#FF6666'}; //orange
+                    case '5': return {color: '#FF3333'}; //red
+                    }
+                },
+                onEachFeature: function(feature, layer){
+                    if (feature.properties && feature.properties.nome){
+                        layer.bindPopup(feature.properties.nome);
+                    }
+                }
+            }).addTo(map);
+        });
+    };
+</script>
+
+{% endblock %}
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/bollettini.js" type="text/javascript"></script>
+{% endblock extra_script %}

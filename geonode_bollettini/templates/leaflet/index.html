@@ -1,0 +1,44 @@
+{% extends "site_base.html" %}
+{% load leaflet_tags %}
+{% block extra_head %}
+	<link href="{{ STATIC_URL }}css/leaflet.css" rel="stylesheet"/>
+    {% leaflet_js %}
+    {% leaflet_css %}
+{% endblock %}
+{% block body_class %}leaflet{% endblock %}
+{% block body_outer %}
+<div class="span2">
+  </div>
+<div class="span10">
+
+  {% leaflet_map "main" callback="main_map_init" %}
+</div>
+ <script type="text/javascript">
+        function main_map_init (map, options) {
+
+          var dataurl = '{% url "dopodomani-data" %}';
+
+
+          // Download GeoJSON via Ajax
+          $.getJSON(dataurl, function (data) {
+            // Add GeoJSON layer
+            L.geoJson(data,{
+                style: function(feature){
+                   switch (feature.properties.pericolo){
+                     case '1': return {color: '#B3FF66'}; //green
+                     case '2': return {color: '#FFFF66'}; //yellow
+                     case '3': return {color: '#FFB366'}; //yellow-orange
+                     case '4': return {color: '#FF6666'}; //orange
+                     case '5': return {color: '#FF3333'}; //red
+                   }
+                  },
+                  onEachFeature: function(feature, layer){
+                    if (feature.properties && feature.properties.nome){
+                      layer.bindPopup(feature.properties.nome)
+                    }
+                  }
+              }).addTo(map);
+          });
+        }
+    </script>
+{% endblock %}
