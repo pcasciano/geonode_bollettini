@@ -11,6 +11,8 @@ class BollettiniRouter(object):
             return 'gisdata'
         return None
 
+
+
     def db_for_write(self, model, **hints):
         """
         Attempts to write auth models go to auth_db.

@@ -18,6 +18,7 @@ class BollettinoDomani(models.Model):
     class Meta:
         db_table = 'bollettino_domani'
 
+
 class BollettinoDopodomani(models.Model):
     id_0 = models.IntegerField(primary_key=True)
     geom = models.MultiPolygonField(srid=32632, null=True, blank=True)
@@ -49,6 +50,3 @@ class BollettinoOggi(models.Model):
     objects = models.GeoManager()
     class Meta:
         db_table = 'bollettino_oggi'
-
-
-
