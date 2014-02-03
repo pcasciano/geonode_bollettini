@@ -116,9 +116,9 @@ var loadGeoJSON  = function(map, options,url){
              * @return
              */
             style: function(feature){
-                if (typeof feature.properties.pericolo ==='string' /* && feature.properties.pericolo!==-1*/ )
+                if (typeof feature.properties.pericolo ==='string')
                 {
-                    if(feature.properties.pericolo!==-1)
+                    if(feature.properties.pericolo!=='-1')
                     {
                         for (var i=0; i<danger_scale.length; i++)
                         {
