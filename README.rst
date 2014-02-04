@@ -23,6 +23,12 @@ Install django-geojson::
 
     $ pip install django-geojson
 
+Install and start geonode_bollettini::
+
+    $ git clone https://github.com/pcasciano/geonode_bollettini.git
+    $ cd geonode_bollettini
+    $python manage.py runserver
+
 Usage
 -----
 
